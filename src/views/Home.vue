@@ -8,6 +8,18 @@
                 <ComponentList />
                 <RealTimeComponentList />
             </section>
+            <div
+                class="ruler-left"
+                style="width: 40px; height: 40px; overflow: hidden; float: left"
+            >
+                <canvasRuler
+                    ref="“rulerLeft"
+                    :vertical="true"
+                    :width="40"
+                    :height="4550"
+                    :style="style2"
+                ></canvasRuler>
+            </div>
             <!-- 中间画布 -->
             <section class="center">
                 <div
@@ -26,10 +38,10 @@
                     <el-tab-pane label="属性" name="attr">
                         <component :is="curComponent.component + 'Attr'" />
                     </el-tab-pane>
-                    <el-tab-pane label="动画" name="animation" style="padding-top: 20px;">
+                    <el-tab-pane label="动画" name="animation" style="padding-top: 20px">
                         <AnimationList />
                     </el-tab-pane>
-                    <el-tab-pane label="事件" name="events" style="padding-top: 20px;">
+                    <el-tab-pane label="事件" name="events" style="padding-top: 20px">
                         <EventList />
                     </el-tab-pane>
                 </el-tabs>
@@ -54,9 +66,18 @@ import RealTimeComponentList from '@/components/RealTimeComponentList'
 import CanvasAttr from '@/components/CanvasAttr'
 import { changeComponentSizeWithScale } from '@/utils/changeComponentsSizeWithScale'
 import { setDefaultcomponentData } from '@/store/snapshot'
+import canvasRuler from '../canvasRuler/index.vue'
 
 export default {
-    components: { Editor, ComponentList, AnimationList, EventList, Toolbar, RealTimeComponentList, CanvasAttr },
+    components: {
+        Editor,
+        ComponentList,
+        AnimationList,
+        EventList,
+        Toolbar,
+        RealTimeComponentList,
+        CanvasAttr,
+    },
     data() {
         return {
             activeName: 'attr',
@@ -80,11 +101,17 @@ export default {
             // 用保存的数据恢复画布
             if (localStorage.getItem('canvasData')) {
                 setDefaultcomponentData(JSON.parse(localStorage.getItem('canvasData')))
-                this.$store.commit('setComponentData', JSON.parse(localStorage.getItem('canvasData')))
+                this.$store.commit(
+                    'setComponentData',
+                    JSON.parse(localStorage.getItem('canvasData')),
+                )
             }
 
             if (localStorage.getItem('canvasStyle')) {
-                this.$store.commit('setCanvasStyle', JSON.parse(localStorage.getItem('canvasStyle')))
+                this.$store.commit(
+                    'setCanvasStyle',
+                    JSON.parse(localStorage.getItem('canvasStyle')),
+                )
             }
         },
 
@@ -135,64 +162,64 @@ export default {
 
 <style lang="scss">
 .home {
-    height: 100vh;
-    background: #fff;
+  height: 100vh;
+  background: #fff;
 
-    main {
-        height: calc(100% - 64px);
-        position: relative;
+  main {
+    height: calc(100% - 64px);
+    position: relative;
 
-        .left {
-            position: absolute;
-            height: 100%;
-            width: 200px;
-            left: 0;
-            top: 0;
+    .left {
+      position: absolute;
+      height: 100%;
+      width: 200px;
+      left: 0;
+      top: 0;
 
-            & > div {
-                overflow: auto;
+      & > div {
+        overflow: auto;
 
-                &:first-child {
-                    border-bottom: 1px solid #ddd;
-                }
-            }
+        &:first-child {
+          border-bottom: 1px solid #ddd;
         }
-
-        .right {
-            position: absolute;
-            height: 100%;
-            width: 288px;
-            right: 0;
-            top: 0;
-
-            .el-select {
-                width: 100%;
-            }
-        }
-
-        .center {
-            margin-left: 200px;
-            margin-right: 288px;
-            background: #f5f5f5;
-            height: 100%;
-            overflow: auto;
-            padding: 20px;
-
-            .content {
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-            }
-        }
+      }
     }
 
-    .placeholder {
-        text-align: center;
-        color: #333;
+    .right {
+      position: absolute;
+      height: 100%;
+      width: 288px;
+      right: 0;
+      top: 0;
+
+      .el-select {
+        width: 100%;
+      }
     }
 
-    .global-attr {
-        padding: 10px;
+    .center {
+      margin-left: 200px;
+      margin-right: 288px;
+      background: #f5f5f5;
+      height: 100%;
+      overflow: auto;
+      padding: 20px;
+
+      .content {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
     }
+  }
+
+  .placeholder {
+    text-align: center;
+    color: #333;
+  }
+
+  .global-attr {
+    padding: 10px;
+  }
 }
 </style>
